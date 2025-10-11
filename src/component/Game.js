@@ -3,7 +3,7 @@ import Board from "./Board";
 
 let step = 0;
 
-const minimax = (board, depth, isMaximizing) =>{
+const minimax = (board, depth, alpha, beta, isMaximizing) =>{
     step += 1;
     const winner = calculateWinner(board);
     if (winner === "X") { //human win
@@ -22,8 +22,10 @@ const minimax = (board, depth, isMaximizing) =>{
             if (!board[i]){
                 const newBoard = [...board];
                 newBoard[i] = "O";
-                const val = minimax(newBoard, depth + 1, false); //next turn is Human -> try to minimize
-                maxVal = Math.max(maxVal, val);
+                const val = minimax(newBoard, depth + 1, alpha, beta, false); //next turn is Human -> try to minimize
+                maxVal = Math.max(maxVal, val); 
+                alpha = Math.max(alpha, val);
+                if (beta <= alpha) break;
             }
         }
         return maxVal;
@@ -34,8 +36,10 @@ const minimax = (board, depth, isMaximizing) =>{
             if (!board[i]){
                 const newBoard = [...board];
                 newBoard[i] = "X";
-                const val = minimax(newBoard, depth + 1, true); //next turn is AI
+                const val = minimax(newBoard, depth + 1, alpha, beta, true); //next turn is AI
                 minVal = Math.min(minVal, val);
+                beta = Math.min(beta, val);
+                if (beta <= alpha) break;
             }
         }
         return minVal;
@@ -49,7 +53,7 @@ const getBestMove = (board) => {
         if (!board[i]){ //if AI choose this move
             const newBoard = [...board];
             newBoard[i] = "O";
-            const val = minimax(newBoard, 0, false);
+            const val = minimax(newBoard, 0, -Infinity, Infinity, false);
             if (best < val){
                 best = val;
                 move = i;
