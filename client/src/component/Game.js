@@ -192,13 +192,13 @@ function Game(){
                 <span className="player">{
                     (!player) ? 
                         "You are the spectator":
-                        ("You are player" + {player})}</span>
+                        ("You are player " + player)}</span>
                 <span className="turn">{
                     (player != null) ?
                         ((winner) ? 
                             ( (player === winner)? "You win" : "You lose" )
                             :(isPlayable ? 'Your turn' : 'Wait for opponent'))
-                        :"Keep watching!"
+                        :"Keep watching!    "
                 }
                 </span>
                 <Board board={board} handleClick={handleClick}/>
